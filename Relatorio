@@ -1,0 +1,56 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{graphicx}
+
+\title{Relatório de Análise de Funções de Hash e Desempenho em Diferentes Tamanhos de Tabela}
+\author{Alunos: Andrei Silva e Vitor Coradin \\
+Professor: Andrey}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\section*{Objetivo}
+Este relatório visa analisar o desempenho de três funções de hash (\texttt{resto}, \texttt{multiplicação} e \texttt{dobramento}) em tabelas de hash de tamanhos variados (10, 100 e 1000) para diferentes tamanhos de dados (1.000.000, 5.000.000 e 20.000.000). As métricas analisadas incluem número de colisões, tempo de inserção, tempo de busca e número de comparações necessárias para realizar as operações.
+
+\section*{Metodologia}
+O programa realiza uma série de inserções e buscas em diferentes configurações de tabela e função de hash. Cada operação é testada cinco vezes para obter uma média representativa. O código em Java utiliza as seguintes funções de hash:
+
+\begin{enumerate}
+    \item \textbf{Função de Resto}: Realiza o hash pela operação de módulo (\texttt{chave \% tamanho\_da\_tabela}).
+    \item \textbf{Função de Multiplicação}: Aplica uma constante de multiplicação recomendada (\texttt{A = 0.6180339887}) antes de calcular o índice.
+    \item \textbf{Função de Dobramento}: Soma segmentos da chave dividida e aplica módulo sobre o tamanho da tabela.
+\end{enumerate}
+
+\section*{Resultados}
+
+\begin{table}[h!]
+    \centering
+    \begin{tabular}{|c|c|c|c|c|c|c|}
+        \hline
+        \textbf{Tamanho da Tabela} & \textbf{Tamanho dos Dados} & \textbf{Função Hash} & \textbf{Colisões} & \textbf{Tempo de Inserção (ms)} & \textbf{Tempo de Busca (ms)} & \textbf{Comparações} \\
+        \hline
+        10 & 1.000.000 & Resto & 49.999.588.250 & 56,98 & 0,21 & 6 \\
+        10 & 1.000.000 & Multiplicação & 50.000.146.943 & 206,04 & 0,08 & 6 \\
+        100 & 1.000.000 & Dobramento & 4.999.915.719 & 19,78 & 0,07 & 5 \\
+        1000 & 5.000.000 & Multiplicação & 12.500.007.475 & 800,98 & 0,04 & 5 \\
+        \hline
+    \end{tabular}
+    \caption{Resultados de desempenho das funções de hash}
+\end{table}
+
+\section*{Análise de Desempenho}
+\begin{enumerate}
+    \item \textbf{Colisões}: Observou-se um aumento substancial no número de colisões ao utilizar tabelas menores com funções de hash menos eficientes. A função de \texttt{resto}, embora simples, gerou menos colisões em muitos casos comparada à \texttt{multiplicação}.
+    
+    \item \textbf{Tempo de Inserção e Busca}: A função \texttt{multiplicação} apresentou tempos de inserção mais altos. A função de \texttt{dobramento}, em geral, obteve tempos de inserção e busca mais curtos para tabelas pequenas.
+    
+    \item \textbf{Comparações}: A média de comparações foi estável em 5 ou 6, independentemente do tamanho da tabela, mas a função \texttt{dobramento} se destacou, reduzindo ligeiramente o número de comparações necessárias em buscas.
+\end{enumerate}
+
+\section*{Conclusão}
+Dentre as funções testadas, a função \texttt{dobramento} se mostrou mais eficiente em tabelas menores, oferecendo um tempo de execução mais rápido e um número de colisões reduzido em algumas configurações. A função \texttt{multiplicação} tem desempenho moderado, porém com maior custo de tempo para inserções. Em grandes volumes de dados, a função \texttt{resto} pode ser uma escolha vantajosa pela simplicidade.
+
+\end{document}
